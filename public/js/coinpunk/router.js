@@ -1,6 +1,7 @@
 coinpunk.router = Path;
 
 coinpunk.router.render = function(id, path, data, callback) {
+console.log('[router.js.4]', id, path, data, callback); //TODO
   coinpunk.Template.draw('header', 'header', data, callback);
   coinpunk.Template.draw(id, path, data, callback);
 };
@@ -54,6 +55,8 @@ coinpunk.router.initWallet = function(callback) {
   if(coinpunk.wallet)
     return callback(true);
 
+
+console.log('[router.js.57] = > signin'); //TODO
   coinpunk.router.route('signin');
 };
 
@@ -84,6 +87,9 @@ coinpunk.router.map("#/signup").to(function() {
 coinpunk.router.map("#/signin").to(function() {
   if(coinpunk.wallet)
     return coinpunk.router.render('view', 'dashboard');
+
+
+console.log('[router.js.90] => render'); //TODO
   return coinpunk.router.render('view', 'signin');
 });
 
@@ -180,6 +186,8 @@ coinpunk.router.map('#/buy').to(function() {
 });
 
 coinpunk.router.map('#/').to(function() {
+
+console.log('[router.js.182:map:]'); //TODO
 /*
   if(window.navigator.registerProtocolHandler)
     window.navigator.registerProtocolHandler(

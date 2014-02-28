@@ -8,6 +8,7 @@ coinpunk.Wallet = function(walletKey, walletId) {
   this.unspent = [];
   this.minimumConfirmations = 1;
   this.unspentConfirmations = [];
+  this.networkObj = this.network === 'testnet' ? bitcore.networks.testnet : bitcore.networks.livenet;
   var keyPairs = [];
 
   this.loadPayloadWithLogin = function(id, password, payload) {
@@ -47,12 +48,19 @@ coinpunk.Wallet = function(walletKey, walletId) {
     return true;
   };
 
+
   this.createNewAddress = function(name, isChange) {
-    var eckey      = new Bitcoin.ECKey();
+    var Walletkey = bitcore.WalletKey.class();
+    var wKey      = new  Walletkey({
+      network: this.networkObj, 
+    });
+    wKey.generate();
+    var obj = wKey.storeObj();
+
     var newKeyPair = {
-      key: eckey.getExportedPrivateKey(this.network),
-      publicKey: Bitcoin.convert.bytesToHex(eckey.getPubKeyHash()),
-      address: eckey.getBitcoinAddress(this.network).toString(),
+      key: obj.priv,
+      publicKey: obj.pub,
+      address: obj.addr,
       isChange: (isChange == true)
     };
 

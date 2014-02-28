@@ -5,14 +5,6 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     shell: {
-      browserify: {
-        options: {
-          stdout: true
-        },
-        command: grunt.option('target') === 'dev' 
-                ? './node_modules/browserify/bin/cmd.js -r ./lib/bitcoinjs/index.js > public/js/lib/bitcoinjs.js'
-                : './node_modules/browserify/bin/cmd.js -r ./lib/bitcoinjs/index.js | ./node_modules/.bin/uglifyjs  > public/js/lib/bitcoinjs.js'
-      },
       minifycss: {
         options: {
           stdout: true
@@ -23,14 +15,14 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-      coinpunk: {
+      libs: {
         options: {
           "mangle": grunt.option('target') === 'dev' ? false : true,
           "beautify": grunt.option('target') === 'dev' ? true : false,
           "screw-ie8": true
         },
         files: {
-          'public/js/all.js': [
+          'public/js/libs.js': [
             'public/js/lib/jquery.js',
             'public/js/lib/bootstrap.js',
             'public/js/lib/underscore.js',
@@ -60,7 +52,18 @@ module.exports = function(grunt) {
             'public/js/lib/jsqrcode/findpat.js',
             'public/js/lib/jsqrcode/alignpat.js',
             'public/js/lib/jsqrcode/databr.js',
-            'public/js/lib/qrcode.js',
+            'public/js/lib/qrcode.js'
+          ]
+        }
+      },
+      coinpunk: {
+        options: {
+          "mangle": grunt.option('target') === 'dev' ? false : true,
+          "beautify": grunt.option('target') === 'dev' ? true : false,
+          "screw-ie8": true
+        },
+        files: {
+          'public/js/cp.js': [
             'public/js/coinpunk.js',
             'public/js/coinpunk/utils.js',
             'public/js/coinpunk/template.js',
@@ -78,16 +81,16 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      scripts: {
-        files: ['public/js/**/*.js'],
+      cp: {
+        files: ['public/js/coinpunk/**/*.js'],
         tasks: ['uglify:coinpunk'],
         options: {
           spawn: false,
         },
       },
-      scriptsBrowserify: {
-        files: ['lib/bitcoinjs/**/*.js'],
-        tasks: ['shell:browserify'],
+      libs: {
+        files: ['public/js/libs/**/*js'],
+        tasks: ['uglify:libs'],
         options: {
           spawn: false,
         },

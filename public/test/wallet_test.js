@@ -32,7 +32,7 @@ describe('coinpunk.Wallet', function(){
   }
   
   it('should create new addresses', function() {
-    var wallet = new coinpunk.Wallet();
+    var wallet = new coinpunk.Wallet(); 
     var address = wallet.createNewAddress('Default');
     assert.equal(address, wallet.addresses()[0].address);
     assert.equal('Default', wallet.addresses()[0].name);
